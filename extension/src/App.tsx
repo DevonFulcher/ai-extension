@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './App.css';
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
 
   (async () => {
     const [tab] = await chrome.tabs.query({active: true, lastFocusedWindow: true});
-    if (tab.id == undefined) {
+    if (tab.id === undefined) {
       return
     }
     const response = await chrome.tabs.sendMessage(tab.id, {greeting: "hello"});
