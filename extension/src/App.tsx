@@ -19,9 +19,8 @@ function App() {
     if (tab.id === undefined) {
       return
     }
-    const response = await chrome.tabs.sendMessage(tab.id, {greeting: "hello"});
-    // do something with response here, not outside the function
-    console.log(response);
+    const response = await chrome.tabs.sendMessage(tab.id, {request: "article"});
+    console.log(response.article);
   })();
 
   return (

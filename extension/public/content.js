@@ -5,9 +5,9 @@ chrome.runtime.onMessage.addListener(
                 "from the extension");
     const articles = document.getElementsByTagName("article")
     if (articles.length > 0) {
-      sendResponse({farewell: articles[0].innerText})
+      sendResponse({article: articles[0].innerText})
+      return
     }
-    if (request.greeting === "hello")
-      sendResponse({farewell: document.getElementsByTagName("article")});
+    sendResponse({article: ""});
   }
 );
