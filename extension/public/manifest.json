@@ -3,6 +3,11 @@
   "name": "ai extension",
   "description": "ai extension",
   "version": "1.0",
+  "permissions": ["activeTab"],
+  "content_scripts": [{
+    "matches": ["*://*/*"],
+    "js": ["content.js"]
+  }],
   "action": {
     "default_popup": "index.html",
     "default_icon": "hello_extensions.png"
