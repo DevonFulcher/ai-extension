@@ -6,7 +6,6 @@ chrome.runtime.onMessage.addListener(
     const articles = document.getElementsByTagName("article")
     if (articles.length > 0) {
       sendResponse({article: articles[0].innerText})
-      return
     }
     sendResponse({article: ""});
   }
