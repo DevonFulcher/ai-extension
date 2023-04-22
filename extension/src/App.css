@@ -15,6 +15,15 @@ button {
   position: relative;
 }
 
+input {
+  border-radius: 5px;
+  border-color: black;
+}
+
+.Margin-top {
+  margin-top: 10px;
+}
+
 .Hidden {
   visibility: hidden;
 }

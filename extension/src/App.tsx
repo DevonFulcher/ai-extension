@@ -72,7 +72,7 @@ function App() {
       return <form onSubmit={onSubmit}>
         <label htmlFor="save">OpenAI Key</label>
         <input onChange={onChange} id="save"></input>
-        <button type="submit">Save</button>
+        <button className="Margin-top" type="submit">Save</button>
       </form>
     }
     return <Button isLoading={isLoading} onClick={onClick}>Summarize Article</Button>
@@ -81,7 +81,7 @@ function App() {
   return (
     <div className="Container">
       <header>
-        AI Extension
+        <h1>AI Extension</h1>
       </header>
       <div className="Content">
         {getContent()}
