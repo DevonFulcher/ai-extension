@@ -48,7 +48,7 @@ function App() {
       model: "text-davinci-003",
       prompt: "Summarize this:\n" + articleResponse.article,
       temperature: 0,
-      max_tokens: 50,
+      max_tokens: 200,
     });
     console.log(openaiResponse)
     if (openaiResponse.data.choices.length > 0) {
