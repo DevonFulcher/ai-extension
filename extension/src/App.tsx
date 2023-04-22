@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Configuration, OpenAIApi } from "openai";
 
@@ -16,19 +16,22 @@ function App() {
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
-    chrome.storage.sync.set({ storageKey: apiKey }).then(() => {
+    console.log(apiKey)
+    chrome.storage.local.set({ key: apiKey}).then(() => {
       const configuration = new Configuration({apiKey});
       setOpenAI(new OpenAIApi(configuration))
     });
   }
 
-  chrome.storage.sync.get([storageKey]).then((result) => {
-    if (!result || !result.storageKey) {
-      return
-    }
-    const configuration = new Configuration({apiKey: result.storageKey});
-    setOpenAI(new OpenAIApi(configuration))
-  });
+  useEffect(() => {
+    chrome.storage.local.get(["key"]).then((result) => {
+      if (!result || !result.key) {
+        return
+      }
+      const configuration = new Configuration({apiKey: result.key});
+      setOpenAI(new OpenAIApi(configuration))
+    });
+  }, [])
 
   const onClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     setIsLoading(true);
@@ -38,8 +41,8 @@ function App() {
         return
       }
       const [tab] = await chrome.tabs.query({active: true, lastFocusedWindow: true});
-      if (!tab.id) {
-        console.log("tab id is undefined")
+      if (!tab || !tab.id) {
+        console.log("tab or tab id is undefined")
         return
       }
       console.log(`sending message to tab with id: ${tab.id}`)
