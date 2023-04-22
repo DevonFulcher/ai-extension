@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Configuration, OpenAIApi } from "openai";
+import { Button } from "./components/Button";
 
 function App() {
   const [apiKey, setApiKey] = useState<string>()
@@ -64,9 +65,6 @@ function App() {
   }
 
   const getContent = () => {
-    if (isLoading) {
-      return <>loading</>
-    }
     if (summarization) {
       return <>{summarization}</>
     }
@@ -77,15 +75,17 @@ function App() {
         <button type="submit">Save</button>
       </form>
     }
-    return <button onClick={onClick}>Summarize Article</button>
+    return <Button isLoading={isLoading} onClick={onClick}>Summarize Article</Button>
   }
 
   return (
-    <div>
+    <div className="Container">
       <header>
         AI Extension
       </header>
-      {getContent()}
+      <div className="Content">
+        {getContent()}
+      </div>
     </div>
   );
 }
