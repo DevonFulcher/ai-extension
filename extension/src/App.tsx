@@ -14,14 +14,14 @@ function App() {
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
-    chrome.storage.local.set({ key: apiKey}).then(() => {
+    chrome.storage.sync.set({ key: apiKey}).then(() => {
       const configuration = new Configuration({apiKey});
       setOpenAI(new OpenAIApi(configuration))
     });
   }
 
   useEffect(() => {
-    chrome.storage.local.get(["key"]).then((result) => {
+    chrome.storage.sync.get(["key"]).then((result) => {
       if (!result || !result.key) {
         return
       }
