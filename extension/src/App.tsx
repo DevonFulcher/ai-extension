@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Configuration, OpenAIApi } from "openai";
 
-const storageKey = "apiKey"
-
 function App() {
   const [apiKey, setApiKey] = useState<string>()
   const [openAI, setOpenAI] = useState<OpenAIApi>()
@@ -16,7 +14,6 @@ function App() {
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
-    console.log(apiKey)
     chrome.storage.local.set({ key: apiKey}).then(() => {
       const configuration = new Configuration({apiKey});
       setOpenAI(new OpenAIApi(configuration))
@@ -33,33 +30,37 @@ function App() {
     });
   }, [])
 
-  const onClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+  const getSummarization = async () => {
+    if (!openAI) {
+      console.log("openAI is undefined")
+      return
+    }
+    const [tab] = await chrome.tabs.query({active: true, lastFocusedWindow: true});
+    if (!tab || !tab.id) {
+      console.log("tab or tab id is undefined")
+      return
+    }
+    console.log(`sending message to tab with id: ${tab.id}`)
+    const articleResponse = await chrome.tabs.sendMessage(tab.id, {request: "article"});
+    console.log(articleResponse);
+    const openaiResponse = await openAI.createCompletion({
+      model: "text-davinci-003",
+      prompt: "Summarize this:\n" + articleResponse.article,
+      temperature: 0,
+      max_tokens: 50,
+    });
+    console.log(openaiResponse)
+    if (openaiResponse.data.choices.length > 0) {
+      return openaiResponse.data.choices[0].text
+    }
+    return ""
+  }
+
+  const onClick: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
     setIsLoading(true);
-    (async () => {
-      if (!openAI) {
-        console.log("openAI is undefined")
-        return
-      }
-      const [tab] = await chrome.tabs.query({active: true, lastFocusedWindow: true});
-      if (!tab || !tab.id) {
-        console.log("tab or tab id is undefined")
-        return
-      }
-      console.log(`sending message to tab with id: ${tab.id}`)
-      const articleResponse = await chrome.tabs.sendMessage(tab.id, {request: "article"});
-      console.log(articleResponse);
-      const openaiResponse = await openAI.createCompletion({
-        model: "text-davinci-003",
-        prompt: "Summarize this:\n" + articleResponse.article,
-        temperature: 0,
-        max_tokens: 50,
-      });
-      console.log(openaiResponse)
-      if (openaiResponse.data.choices.length > 0) {
-        setSummarization(openaiResponse.data.choices[0].text)
-      }
-    })();
+    const summarization = await getSummarization();
     setIsLoading(false);
+    setSummarization(summarization)
   }
 
   const getContent = () => {
