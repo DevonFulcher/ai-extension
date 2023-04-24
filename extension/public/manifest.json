@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "ai extension",
-  "description": "ai extension",
-  "version": "1.0",
+  "name": "AI Extension",
+  "description": "Summarizes articles with AI",
+  "version": "0.0.1",
   "permissions": [
     "activeTab",
     "storage"
@@ -13,9 +13,11 @@
   }],
   "action": {
     "default_popup": "index.html",
-    "default_icon": "hello_extensions.png"
+    "default_icon": "icon16.png"
   },
-  "host_permissions": [
-    "https://swapi.dev/*"
-  ]
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
 }
