@@ -1,4 +1,4 @@
-# AI extension
+# AI Extension
 AI-enabled Chrome extension
 
 ![extension screenshot](./public/screenshot-readme.png)
